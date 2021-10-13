@@ -36,5 +36,12 @@ int modificarAvion(eAvion arrayAviones[], int tamA, eViaje arrayViajes[], int ta
 int bajaAvion(eAvion arrayAviones[],int tamA, eViaje arrayViajes[], int tamV, eMarca arrayMarcas[], int tamM);
 int buscarAvionMatricula(eAvion arrayAviones[], int tam, int matricula);
 int ordenamientoMarcaYMatricula(eAvion arrayAviones[], int tamA, eViaje arrayViajes[], int tamV, eMarca arrayMarcas[], int tamM);
+int mostrarBoeing(eAvion arrayAviones[], int tamA,eViaje arrayViajes[], int tamV,eMarca arrayMarcas[], int tamM);
+int mostrarAvionesMarcaSeleccionada(eAvion arrayAviones[], int tamA, eViaje arrayViajes[], int tamV, eMarca arrayMarcas[], int tamM);
+void mostrarMatriculaYMarca(eAvion unAvion, eMarca arrayMiajes[], int tamM);
+int mostrarMatriculasYMarca(eAvion arrayAviones[], int tamA, eViaje arrayViajes[], int tamV, eMarca arrayMarcas[], int tamM);
+int informarKmsTotalesATR(eAvion arrayAviones[], int tamA, eViaje arrayViajes[], int tamV);
+int buscarAvionPorModelo(eAvion arrayAviones[], int tamA, int modelo);
+int cantidadTotalAsientosAvionSeleccionado(eAvion arrayAviones[], int tamA, eViaje arrayViajes[], int tamV, eMarca arrayMarcas[], int tamM);
 
 #endif /* AVION_H_ */

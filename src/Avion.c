@@ -322,7 +322,7 @@ int ordenamientoMarcaYMatricula(eAvion arrayAviones[], int tamA, eViaje arrayVia
 				aux=arrayAviones[i];
 				arrayAviones[i]=arrayAviones[j];
 				arrayAviones[j]=aux;
-				if((arrayAviones[i].matricula=arrayAviones[j].matricula) && (arrayAviones[i].matricula>arrayAviones[j].matricula))
+				if((arrayAviones[i].idMarca=arrayAviones[j].idMarca) && (arrayAviones[i].matricula>arrayAviones[j].matricula))
 				{
 					aux=arrayAviones[i];
 					arrayAviones[i]=arrayAviones[j];
@@ -333,5 +333,188 @@ int ordenamientoMarcaYMatricula(eAvion arrayAviones[], int tamA, eViaje arrayVia
 		}
 	}
 
+	return retorno;
+}
+
+int mostrarBoeing(eAvion arrayAviones[], int tamA,eViaje arrayViajes[], int tamV,eMarca arrayMarcas[], int tamM)
+{
+	int retorno=-1;
+	int i;
+
+	for(i=0;i<tamA;i++)
+	{
+		if(arrayAviones[i].idMarca==1000) //si se cumple la condicion de que dentro del array, el idMarca sea igual al que tiene asignado Boeing, entra al if
+		{
+			mostrarAvion(arrayAviones[i], arrayViajes, tamV, arrayMarcas, tamM); //mostramos los aviones de la marca boeing
+			retorno++;
+		}
+	}
+	if(retorno==-1)
+	{
+		puts("\nNo hay aviones Boeing cargados.");
+	}
+	return retorno;
+}
+
+int mostrarAvionesMarcaSeleccionada(eAvion arrayAviones[], int tamA, eViaje arrayViajes[], int tamV, eMarca arrayMarcas[], int tamM)
+{
+	int i;
+	int retorno=-1;
+	int idMarca;
+
+	mostrarMarcas(arrayMarcas, tamM);
+	getInt("\nIngrese el ID de la marca de el/los aviones que desea mostrar: ", &idMarca);
+	while(idMarca!=1000 && idMarca!=1001 && idMarca!=1002 && idMarca!=1003)
+	{
+		getInt("\nError, ingrese el ID de la marca de el/los aviones que desea mostrar: ", &idMarca);
+	}
+	puts("\nListando aviones con la marca seleccionada...");
+	for(i=0;i<tamA;i++)
+	{
+		if(idMarca==arrayAviones[i].idMarca)
+		{
+			mostrarAvion(arrayAviones[i], arrayViajes, tamV, arrayMarcas, tamM);
+			retorno++;
+		}
+	}
+	if(retorno==-1)
+	{
+		puts("\nNo hay aviones cargados con la marca que selecciono.");
+	}
+	return retorno;
+}
+
+void mostrarMatriculaYMarca(eAvion unAvion, eMarca arrayMarcas[], int tamM)
+{
+	char descripcionMarca[20];
+
+	cargarMarca(arrayMarcas, tamM, descripcionMarca, unAvion.idMarca);
+
+	printf("\n  matricula: %d  marca: %s ",	unAvion.matricula,
+											descripcionMarca);
+}
+
+int mostrarMatriculasYMarca(eAvion arrayAviones[], int tamA, eViaje arrayViajes[], int tamV, eMarca arrayMarcas[], int tamM)
+{
+	int retorno=-1;
+	int i;
+	int len;
+
+	len=avionesLen(arrayAviones, tamA);
+	if(len>0)
+	{
+		puts("\nListando aviones...");
+		for(i=0;i<tamA;i++)
+		{
+			if(arrayAviones[i].isEmpty==LLENO)
+			{
+				if(arrayAviones[i].idViaje==102)
+				{
+					mostrarAvion(arrayAviones[i], arrayViajes, tamV, arrayMarcas, tamM);
+					retorno=1;
+				}
+			}
+		}
+	}
+	else
+	{
+		puts("\nNo hay aviones cargados para mostrar.");
+	}
+	if(retorno==-1)
+	{
+		puts("\nNo hay aviones cargados que hayan viajado a Neuquen para mostrar.");
+	}
+
+	return retorno;
+}
+
+int informarKmsTotalesATR(eAvion arrayAviones[], int tamA, eViaje arrayViajes[], int tamV)
+{
+	int retorno=-1;
+	int i;
+	int j;
+	int len;
+	float acumuladorATR=0;
+
+	len=avionesLen(arrayAviones, tamA);
+	if(len>0)
+	{
+		puts("\nSumando los kilometros totales recorridos por los aviones marca ATR...");
+		for(i=0;i<tamA;i++)
+		{
+			if(arrayAviones[i].idMarca==1002)
+			{
+				for(j=0;j<tamV;j++)
+				{
+					if(arrayAviones[i].idViaje==arrayViajes[j].idViaje)
+					{
+						acumuladorATR=acumuladorATR+arrayViajes[j].kilometros;
+						retorno++;
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		puts("\nNo hay aviones cargados para mostrar.");
+	}
+	if(retorno==-1)
+	{
+		puts("\nNo hay aviones cargados de la marca ATR para mostrar.");
+	}
+	else
+	{
+		printf("\nLos kilometros totales recorridos por el avion ATR son: %.2f kilometros", acumuladorATR);
+	}
+	return retorno;
+}
+
+int cantidadTotalAsientosAvionSeleccionado(eAvion arrayAviones[], int tamA, eViaje arrayViajes[], int tamV, eMarca arrayMarcas[], int tamM)
+{
+	int retorno=-1;
+	//int i;
+	int len;
+	int modelo;
+	int cantidadDeAsientos;
+
+	len=avionesLen(arrayAviones, tamA);
+	if(len>0)
+	{
+		mostrarAviones(arrayAviones, tamA, arrayViajes, tamV, arrayMarcas, tamM);
+		getInt("\nSeleccione el modelo del avion que desea saber la cantidad de asientos que tiene: ", &modelo);
+		cantidadDeAsientos=buscarAvionPorModelo(arrayAviones, tamA, modelo);
+		if(cantidadDeAsientos!=-1)
+		{
+			printf("\nLa cantidad total de asientos del modelo que selocciono es: %d asientos.", cantidadDeAsientos);
+			retorno=1;
+		}
+	}
+	else
+	{
+		puts("\nNo hay aviones cargados para mostrar.");
+	}
+	return retorno;
+}
+
+int buscarAvionPorModelo(eAvion arrayAviones[], int tamA, int modelo)
+{
+	int retorno=-1;
+	int i;
+	int todoOk=-1;
+
+	for(i=0;i<tamA;i++)
+	{
+		if(modelo==arrayAviones[i].modelo)
+		{
+			retorno=arrayAviones[i].cantAsientos;
+			todoOk=1;
+			break;
+		}
+	}
+	if(todoOk!=-1)
+	{
+		puts("\nNo se encontro un avion con ese modelo, por favor, intente nuevamente.");
+	}
 	return retorno;
 }
